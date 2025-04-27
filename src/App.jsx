@@ -1,6 +1,13 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { useSpring, animated } from '@react-spring/web'
 import './App.css' // only if you have a tailwind or shimmer background in here
+import classicGoldImg from './assets/classic-g.png'
+import technoDreamImg from './assets/techno-dream.png'
+import rubyGoldImg from './assets/ruby-gold.png'
+import tropicalHeat from './assets/tropical-heat.png'
+import wildMountainWestImg from './assets/wild-mountain-west.png'
+import celebrityRowImg from './assets/celebrity-row.png'
+// …
 
 
 function PaymentModal({ onClose, onPay }) {
@@ -50,7 +57,6 @@ function PaymentModal({ onClose, onPay }) {
     </div>
   )
 }
-
 
 function ScratchableSquare({ value, size = 96, disabled}) {
   const canvasRef = useRef(null)
@@ -106,7 +112,7 @@ function ScratchableSquare({ value, size = 96, disabled}) {
 
   return (
     <div className='relative' style={{ width: size, height: size }}>
-      <div className='w-full h-full bg-gray-100 flex items-center justify-center rounded-xl shadow'>
+      <div className='w-full h-full bg-opacity-20 flex items-center justify-center rounded-xl shadow'>
         <span className='text-sm sm:text-lg text-black font-semibold z-0'>
           {value}
         </span>
@@ -126,6 +132,7 @@ function ScratchableSquare({ value, size = 96, disabled}) {
 
 // single ticket with scratchers
 function Ticket({ ticket, onFlipBack, paid }) {
+  const { title, marketingMsg, expectedReturn, bgImage, price } = ticket
   const [flipped, setFlipped] = useState(false)
 
   const frontSpring = useSpring({
@@ -143,13 +150,20 @@ function Ticket({ ticket, onFlipBack, paid }) {
   return (
     <div
       className='relative'
-      style={{ width: 400, height: 500, backgroundColor: ticket.bgColor || '#fff' }}
+      style={{ width: 400, height: 500|| '#fff' }}
     >
       {/* front side */}
       <animated.div
-        className='absolute w-full h-full shadow-xl p-6 rounded-2xl'
-        style={{ ...frontSpring, backfaceVisibility: 'hidden', backgroundColor: ticket.bgColor }}
+        className='absolute w-full h-full shadow-xl p-6 rounded-2xl bg-cover bg-center'
+        style={{ ...frontSpring, backfaceVisibility: 'hidden', backgroundImage: `url(${ticket.bgImage})`}}
       >
+        {/* price‐badge in top right */}
+      <div
+      className="absolute top-4 right-4 w-8 h-8 bg-black rounded-full flex items-center justify-center z-10"
+      >
+        <span className="text-xs font-bold text-white">{price}</span>
+      </div>
+        
         <h2 className='text-center mb-1 text-gray-700 uppercase'>
           {ticket.title}
         </h2>
@@ -206,50 +220,62 @@ export default function App() {
     {
       id: 'classic-gold',
       title: 'Classic Gold',
+      price: '$1',
       marketingMsg: 'go for gold!',
       winInfo: 'Uncover three of the same, get a shed full of gold bars!',
       expectedReturn: 0.78,
-      bgColor: '#fef08a',
+      bgColor: '#fea01a',
+      bgImage: classicGoldImg,
     },
     {
       id: 'celebrity-row',
       title: 'Celebrity Row',
+      price: '$2',
       marketingMsg: 'Shoot for the stars!',
       winInfo: 'Find three stars and live among the stars, courtside at a Lakers game!',
       expectedReturn: 0.82,
-      bgColor: '#c7d2fe',
+      bgColor: '#c9a0dc',
+      bgImage: celebrityRowImg,
     },
     {
       id: 'tropical-heat',
       title: 'Tropical Heat',
+      price: '$10',
       marketingMsg: 'Feel the island vibes!',
       winInfo: 'Uncover three islands and you will find yourself beachside in Hawaii!',
       expectedReturn: 0.75,
       bgColor: '#fed7aa',
+      bgImage: tropicalHeat,
     },
     {
       id: 'wild mountain west',
       title: 'Wild Mountain West',
+      price: '$5',
       marketingMsg: 'Saddle up for big wins!',
       winInfo: 'No horsing around, uncover two of the same prize, win an RV trip to explore the Old West!',
       expectedReturn: 0.7,
       bgColor: '#fcd34d',
+      bgImage: wildMountainWestImg,
     },
     {
       id: 'big-royal-ruby',
       title: 'Big Royal Ruby',
+      price: '$20',
       marketingMsg: 'Experience lavish elegance!',
       winInfo: 'Uncover two house symbols & experience elegance in your own custom built home. Your house goals, now!',
       expectedReturn: 0.85,
       bgColor: '#fecaca',
+      bgImage: rubyGoldImg,
     },
     {
       id: 'techno-dream',
       title: 'Techno Dream',
+      price: '$40',
       marketingMsg: 'Dream the night away!',
       winInfo: 'Tour the world for a year with your favorite electronic artists. All Expenses Paid!',
       expectedReturn: 0.77,
-      bgColor: '#a5f3fc',
+      //bgColor: '#a5f3fc',
+      bgImage: technoDreamImg,
     }
   ]
 
@@ -309,14 +335,20 @@ export default function App() {
           {TICKETS.map((t) => (
             <div
               key={t.id}
-              className="cursor-pointer p-4 bg-gray-100 rounded-xl hover:shadow-xl hover:-translate-y-1 transition"
-              style={{ width: 120, height: 150, backgroundColor: t.bgColor }}
+              className="relative cursor-pointer p-4 bg-gray-100 rounded-xl hover:shadow-xl hover:-translate-y-1 transition"
+              style={{ width: 170, height: 200, backgroundImage: `url(${t.bgImage})` }}
+              //style={{ width: 120, height: 150, backgroundColor: t.bgColor }}
               onClick={() => handleSelect(t.id)}
             >
-              <p className="text-center font-semibold text-gray-700">
+              {/* price badge in the corner */}
+              <div className="absolute top-2 right-2 w-6 h-6 bg-black rounded-full flex items-center justify-center z-10">
+                <span className="text-xs font-bold text-white">{t.price}</span>
+              </div>
+
+              <p className="text-center font-semibold text-gray-700 p-3">
                 {t.title}
               </p>
-              <p className="text-center text-sm italic text-gray-600 mt-2">
+              <p className="text-center text-sm italic text-white">
                 {Math.round(t.expectedReturn * 100)}% return
               </p>
             </div>
