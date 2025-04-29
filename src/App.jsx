@@ -9,6 +9,39 @@ import wildMountainWestImg from './assets/wild-mountain-west.png'
 import celebrityRowImg from './assets/celebrity-row.png'
 // …
 
+const NAMES   = ['judy','thomas','alex','emily','michael','sarah','daniel','jenny','brian','laura','chris','olivia'];
+const AMOUNTS = ['$500','$1,000','$2,500','$5,000','$10,000','$25,000','$50,000','$100,000','$500,000','$1M'];
+const CITIES  = ['san francisco','los angeles','sacramento','san diego','san jose','oakland','fresno','santa barbara','long beach','bakersfield'];
+
+// generate 45 random winner strings once
+const WINNERS = Array.from({ length: 45 }, () => {
+  const name   = NAMES[ Math.floor(Math.random()*NAMES.length) ];
+  const amount = AMOUNTS[ Math.floor(Math.random()*AMOUNTS.length) ];
+  const city   = CITIES[ Math.floor(Math.random()*CITIES.length) ];
+  // capitalize first letter of name & city
+  const nm = name[0].toUpperCase()+name.slice(1);
+  const ct = city.split(' ')
+                 .map(w => w[0].toUpperCase()+w.slice(1))
+                 .join(' ');
+  return `${nm} - ${amount} - ${ct}`;
+});
+
+function LastWinnersTicker() {
+  return (
+    <div className="w-max overflow-hidden py-1 mt-12 ">
+      <div className="inline-block font-bungee whitespace-nowrap animate-marquee">
+      {[...WINNERS, ...WINNERS].map((w, i) => (
+          <span
+            key={i}
+            className="inline-block px-6 text-sm sm:text-base text-white font-semibold uppercase"
+          >
+            {w}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function PaymentModal({ onClose, onPay }) {
   return (
@@ -322,9 +355,9 @@ export default function App() {
 
       {!selected && (
         <div className="mb-8 text-center text-white">
-          <h1 className="text-2xl font-bold mb-4">Choose your Scratch ticket!</h1>
+          <h1 className="font-bungee text-2xl font-bold mb-4">DD's Market</h1>
           <p className="text-base">
-            
+            <span className="font-bungee text-sm italic">*Disclaimer: This is a demo app. No real money involved.</span>
           </p>
         </div>
       )}
@@ -345,7 +378,7 @@ export default function App() {
                 <span className="text-xs font-bold text-white">{t.price}</span>
               </div>
 
-              <p className="text-center font-semibold text-gray-700 p-3">
+              <p className="font-bungee text-center font-semibold text-gray-700 p-3">
                 {t.title}
               </p>
               <p className="text-center text-sm italic text-white">
@@ -363,10 +396,10 @@ export default function App() {
           />
         </div>
       )}
-
+      
       {/* analysis snippet, same as you had */}
-      <div className="bg-white text-black p-4 mt-8 rounded-xl w-96">
-        <h2 className="text-lg text-center font-bold mb-2 mt-2">Purchase History:</h2>
+      <div className="bg-purple-100 text-black p-4 mt-8 rounded-xl w-96">
+        <h2 className="text-lg font-bold mb-2 mt-2">Purchase History:</h2>
         {sortedTickets.length < 1 && <p>No purchases today. Feeling Lucky?</p>}
         {sortedTickets.map(([ticketId, count]) => {
           const ticket = TICKETS.find((t) => t.id === ticketId)
@@ -378,6 +411,9 @@ export default function App() {
           )
         })}
       </div>
+      {/* last winners ticker */}
+      <LastWinnersTicker />
     </div>
   )
 }
+

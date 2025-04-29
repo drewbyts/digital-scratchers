@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* --font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif; */
   line-height: 1.5;
   font-weight: 400;
 
@@ -34,6 +34,7 @@ body {
 }
 
 h1 {
+  
   font-size: 3.2em;
   line-height: 1.1;
 }
@@ -70,14 +71,27 @@ button:focus-visible {
   }
 }
 
-
 .shimmer-bg {
   background: radial-gradient(circle, #79d9fd,#ffd200);
   background-size: 200% 200%;
   animation: pastelRipple 8s ease-in-out infinite;
 }
+
 @keyframes pastelRipple {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+.font-bungee {
+  font-family: 'Bungee', sans-serif !important;
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 120s linear infinite;
 }
